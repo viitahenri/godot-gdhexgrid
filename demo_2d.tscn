@@ -45,4 +45,6 @@ margin_top = -19.0
 margin_right = 105.0
 margin_bottom = -5.0
 text = "HEX"
-
+__meta__ = {
+"_edit_use_anchors_": false
+}
