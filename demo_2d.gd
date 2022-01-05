@@ -3,6 +3,7 @@ extends Node2D
 
 var HexGrid = preload("./HexGrid.gd").new()
 
+onready var tile = $tile
 onready var highlight = get_node("Highlight")
 onready var area_coords = get_node("Highlight/AreaCoords")
 onready var hex_coords = get_node("Highlight/HexCoords")
@@ -15,11 +16,11 @@ func _ready():
     HexGrid.hex_scale = hex_scale_v
     HexGrid.set_bounds(-hex_scale_v, hex_scale_v)
     
-    for x in range(-10, 10):
-        for y in range(-10, 10):
+    for x in range(-20, 20):
+        for y in range(-20, 20):
             var pos = Vector2(x, y) * hex_scale / 2
             var hex = HexGrid.get_hex_at(pos)
-            var hl = highlight.duplicate()
+            var hl = tile.duplicate()
             tiles[hex.axial_coords] = hl
             add_child(hl)
             hl.modulate = Color.gray
@@ -44,7 +45,10 @@ func _unhandled_input(event):
             highlight.position = HexGrid.get_hex_center(hex)
 
         if event is InputEventMouseButton and event.pressed:
-            HexGrid.add_obstacles(hex, 10)
+            if event.button_index == 2:
+                HexGrid.remove_obstacles(hex)
+            else:
+                HexGrid.add_obstacles(hex)
             find_path()
 
 func refresh_tiles():
